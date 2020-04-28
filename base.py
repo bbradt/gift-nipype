@@ -119,17 +119,17 @@ class GIFTCommand(BaseInterface):
 
     def _run_interface(self, runtime):
         """Executes the GIFT function using MATLAB."""
-        with stdchannel_redirected(sys.stderr, os.devnull):
-            self.mlab.inputs.script = self._make_matlab_command()
-            results = self.mlab.run()
-            runtime.returncode = results.runtime.returncode
-            if self.mlab.inputs.uses_mcr:
-                if 'Skipped' in results.runtime.stdout:
-                    self.raise_exception(runtime)
-            runtime.stdout = results.runtime.stdout
-            runtime.stderr = results.runtime.stderr
-            runtime.merged = results.runtime.merged
-            return runtime
+        #with stdchannel_redirected(sys.stderr, os.devnull):
+        self.mlab.inputs.script = self._make_matlab_command()
+        results = self.mlab.run()
+        runtime.returncode = results.runtime.returncode
+        if self.mlab.inputs.uses_mcr:
+            if 'Skipped' in results.runtime.stdout:
+                self.raise_exception(runtime)
+        runtime.stdout = results.runtime.stdout
+        runtime.stderr = results.runtime.stderr
+        runtime.merged = results.runtime.merged
+        return runtime
 
     def _list_outputs(self):
         """Determine the expected outputs based on inputs."""
